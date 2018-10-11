@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Dominoes.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Players\" />
+    <Folder Include="Players\Strategy\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove=":Users:brianbacon:Projects:Dominoes:Dominoes:Players:Player.cs" />
+  </ItemGroup>
+</Project>

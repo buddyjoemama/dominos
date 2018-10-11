@@ -30,5 +30,16 @@ namespace Dominoes
         }
 
         public int Sum => LeftValue + RightValue;
+
+        /// <summary>
+        /// Can this domino be attached to either side of the double.
+        /// </summary>
+        internal bool CanAttachAny(Domino doubleDomino)
+        {
+            return this.LeftValue == doubleDomino.LeftValue ||
+                       this.LeftValue == doubleDomino.RightValue ||
+                       this.RightValue == doubleDomino.LeftValue ||
+                       this.RightValue == doubleDomino.RightValue;
+        }
     }
 }

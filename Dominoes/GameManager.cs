@@ -16,14 +16,14 @@ namespace Dominoes
         {
             dominoList.Generate();
 
-            Console.WriteLine("Head of private trains: " + dominoList.Master.ToString());
-
             _players.Clear();
-            _players.Add(new Player("One", dominoList, new TopDownStrategy()));
+            _players.Add(new Player("One", dominoList, new TopDownPrivateExclusiveStrategy()));
             //_players.Add(new Player("Two", dominoList, new BottomUpStrategy()));
             //_players.Add(new Player("Three", dominoList, new PublicFirstStrategy()));
             //_players.Add(new Player("Four", dominoList, new PrivateFirstStrategy()));
             //_players.Add(new Player("Eric", dominoList, new EricsStrategy()));
+
+            PublicTrain = new Train(false);
 
             while (_players.All(s => s.DominosOnHand < DOMINO_START_COUNT))
             {
@@ -40,6 +40,10 @@ namespace Dominoes
             }
         }
 
+        /// <summary>
+        /// Loop over the players and play each. 
+        /// One iteration is a complete turn.
+        /// </summary>
         public static void TakeTurn()
         {
             foreach(Player player in _players)
@@ -50,5 +54,21 @@ namespace Dominoes
                     throw new PlayerWonException(player);
             }
         }
+
+        /// <summary>
+        /// Master public train.
+        /// </summary>
+        /// <value>The public train.</value>
+        public static Train PublicTrain { get; set; }
+
+        /// <summary>
+        /// List of readonly players
+        /// </summary>
+        /// <value>The players.</value>
+        public static IReadOnlyList<Player> Players => _players.AsReadOnly();
+
+        public static Domino MasterPrivateDomino { get; set; }
+
+        public static Domino MasterPublicDomino { get; set; }
     }
 }

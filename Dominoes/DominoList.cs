@@ -6,7 +6,6 @@ namespace Dominoes
     public class DominoList
     {
         private Queue<Domino> _dominoes = null;
-        public Domino Master { get; set; }
 
         /// <summary>
         /// Clear the list of dominos and regenerate the pick queue
@@ -33,13 +32,7 @@ namespace Dominoes
                 if (rawList.ContainsKey(index))
                 {
                     Domino dominoe = rawList[index];
-
-                    if(dominoe.IsDouble && Master == null)
-                    {
-                        Master = dominoe;
-                    }
-                    else
-                        _dominoes.Enqueue(dominoe);
+                    _dominoes.Enqueue(dominoe);
 
                     rawList.Remove(index);
                 }

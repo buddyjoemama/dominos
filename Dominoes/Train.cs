@@ -5,49 +5,34 @@ namespace Dominoes
 {
     public class Train
     {
-        private LinkedList<Domino> _train = new LinkedList<Domino>();
-        private bool _isPrivate = false;
+        protected LinkedList<Domino> _train = new LinkedList<Domino>();
+        private bool _isPrivate = true;
 
-        // Double ended train.
-        private bool _isDouble = false;
-
-        public Train(Domino master)
+        public Train(bool isPrivate)
         {
-            _train.AddFirst(master);
+            _isPrivate = isPrivate;
         }
 
-        public bool CanPlayDomino(Domino domino)
+        public virtual bool CanPlayDomino(Domino domino)
         {
-            // Always play when the train is empty
-            if(_train.Count == 0)
+            if (GameManager.MasterPrivateDomino == null && domino.IsDouble)
+                return true;
+            else if(GameManager.MasterPrivateDomino == null && !domino.IsDouble)
+            {
+                return false;
+            }
+            else if(GameManager.MasterPrivateDomino != null && 
+                    _train.Count == 0 &&
+                    (domino.LeftValue == GameManager.MasterPrivateDomino.LeftValue ||
+                     domino.LeftValue == GameManager.MasterPrivateDomino.RightValue ||
+                     domino.RightValue == GameManager.MasterPrivateDomino.LeftValue ||
+                     domino.RightValue == GameManager.MasterPrivateDomino.RightValue))
             {
                 return true;
             }
 
-            var first = _train.First;
-            var last = _train.Last;
-
-            // At the head of the train....either end can work.
-            if(_train.Count == 1)
-            {
-                return first.Value.LeftValue == domino.LeftValue ||
-                            first.Value.RightValue == domino.RightValue;
-            }
-
-            // Can go on either end.
-            if (_isDouble)
-            {
-                return first.Value.LeftValue == domino.LeftValue ||
-                            first.Value.LeftValue == domino.RightValue ||
-                            last.Value.LeftValue == domino.LeftValue ||
-                            last.Value.RightValue == domino.RightValue;
-            }
-            else 
-            {
-                // Can it go on the end.
-                return last.Value.RightValue == domino.LeftValue ||
-                           last.Value.RightValue == domino.RightValue;
-            }
+            return _train.Last.Value.RightValue == domino.LeftValue ||
+                         _train.Last.Value.RightValue == domino.RightValue;
         }
 
         /// <summary>
@@ -55,53 +40,46 @@ namespace Dominoes
         /// played on this train.
         /// </summary>
         /// <param name="domino">Domino.</param>
-        public void PlayDomino(Domino domino)
+        public virtual void PlayDomino(Domino domino)
         {
-            if (_isDouble)
+            if (GameManager.MasterPrivateDomino == null && domino.IsDouble)
             {
-                // Double can check both ends of the train...
+                GameManager.MasterPrivateDomino = domino;
+                _train.AddFirst(domino);
 
-                // Look for the correct side...if the left side is connected, 
-                // we have to look at the right.
-                if (_train.Last.Previous != null && _train.Last.Next == null)
-                {
-                    if(_train.Last.Value.RightValue == domino.LeftValue ||
-                       _train.Last.Value.RightValue == domino.RightValue)
-                    {   
-                        if(_train.Last.Value.LeftValue != domino.RightValue)
-                            domino.Flip();
-
-                        // Add it to the end of the train (right side).
-                        _train.AddLast(domino);
-                    }
-                }
-                else  if(_train.First.Previous == null && _train.First.Next != null) // Can we add it to the left side>?
-                {
-                    if(_train.First.Value.LeftValue == domino.LeftValue ||
-                       _train.First.Value.LeftValue == domino.RightValue)
-                    {
-                        if (_train.First.Value.LeftValue != domino.RightValue)
-                            domino.Flip();
-
-                        _train.AddFirst(domino);
-                    }
-                }
+                return;
             }
-            else
+            else if(GameManager.MasterPrivateDomino != null && _train.Count == 0)
             {
-                // Else we have to add it to the right side
-                if(_train.Last.Value.RightValue == domino.LeftValue ||
-                   _train.Last.Value.RightValue == domino.RightValue)
-                {
-                    if (_train.Last.Value.RightValue != domino.LeftValue)
-                        domino.Flip();
+                if (GameManager.MasterPrivateDomino.RightValue != domino.LeftValue)
+                    domino.Flip();
 
-                    _train.AddLast(domino);
-                }
+                _train.AddFirst(domino);
+                return;
+            }
+
+            // Else we have to add it to the right side
+            if (_train.Last.Value.RightValue == domino.LeftValue ||
+               _train.Last.Value.RightValue == domino.RightValue)
+            {
+                if (_train.Last.Value.RightValue != domino.LeftValue)
+                    domino.Flip();
+
+                _train.AddLast(domino);
             }
         }
 
         public bool IsPrivate => _isPrivate;
+
+        public void MakePublic()
+        {
+            _isPrivate = false;
+        }
+
+        public virtual void MakePrivate()
+        {
+            _isPrivate = true;
+        }
 
         public override string ToString()
         {
@@ -112,6 +90,56 @@ namespace Dominoes
             }
 
             return list;
+        }
+    }
+
+    public class GlobalPublicTrain : Train
+    {
+        public GlobalPublicTrain()
+            : base(false)
+        {   
+
+        }
+
+        public override void MakePrivate()
+        {
+            throw new NotSupportedException("Public trains cannot be made private");
+        }
+
+        public override bool CanPlayDomino(Domino domino)
+        {
+            return false;
+        }
+
+        public override void PlayDomino(Domino domino)
+        {
+            // Double can check both ends of the train...
+
+            // Look for the correct side...if the left side is connected, 
+            // we have to look at the right.
+            if (_train.Last.Previous != null && _train.Last.Next == null)
+            {
+                if (_train.Last.Value.RightValue == domino.LeftValue ||
+                   _train.Last.Value.RightValue == domino.RightValue)
+                {
+                    if (_train.Last.Value.LeftValue != domino.RightValue)
+                        domino.Flip();
+
+                    // Add it to the end of the train (right side).
+                    _train.AddLast(domino);
+                }
+            }
+            else if (_train.First.Previous == null && _train.First.Next != null) // Can we add it to the left side>?
+            {
+                if (_train.First.Value.LeftValue == domino.LeftValue ||
+                   _train.First.Value.LeftValue == domino.RightValue)
+                {
+                    if (_train.First.Value.LeftValue != domino.RightValue)
+                        domino.Flip();
+
+                    _train.AddFirst(domino);
+                }
+            }
         }
     }
 }

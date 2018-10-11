@@ -11,14 +11,14 @@ namespace Dominoes.Players
         private DominoList _list = null;
         private List<Domino> _myDominoes = new List<Domino>();
         private String _name = null;
-        private Train _train = null;
+        private Train _train = null; // Players private train.
 
         public Player(String name, DominoList list, IStrategy strategy)
         {
             _name = name;
             _list = list;
             _strategy = strategy;
-            _train = new Train(_list.Master);
+            _train = new Train(true);
         }
 
         public int DominosOnHand => _myDominoes.Count;
@@ -34,8 +34,6 @@ namespace Dominoes.Players
         {
             if (_strategy.CanPlay(_myDominoes, _train))
                 _strategy.Play(_myDominoes, _train);
-            else if (_defaultStrategy.CanPlay(_myDominoes, _train))
-                _defaultStrategy.Play(_myDominoes, _train);
             else
             {
                 try

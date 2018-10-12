@@ -86,7 +86,7 @@ namespace Dominoes
             String list = "";
             foreach (Domino d in _train)
             {
-                list += d.ToString();
+                list += d.ToString() + " ";
             }
 
             return list;
@@ -108,13 +108,24 @@ namespace Dominoes
 
         public override bool CanPlayDomino(Domino domino)
         {
-            return false;
+            if (GameManager.MasterPublicDomino == null && domino.IsDouble)
+                return true;
+            else if (GameManager.MasterPublicDomino == null && !domino.IsDouble)
+                return false;
+            else if (GameManager.MasterPublicDomino != null &&
+                     _train.Count == 0 && 
+                     GameManager.MasterPublicDomino.CanAttachAny(domino))
+            {
+                return true;
+            }
+
+            return _train.First.Value.CanAttachLeft(domino) ||
+                         _train.Last.Value.CanAttachRight(domino);
         }
 
         public override void PlayDomino(Domino domino)
         {
             // Double can check both ends of the train...
-
             // Look for the correct side...if the left side is connected, 
             // we have to look at the right.
             if (_train.Last.Previous != null && _train.Last.Next == null)

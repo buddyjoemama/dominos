@@ -33,6 +33,11 @@ namespace Dominoes.Players.Strategy
         }
     }
 
+    public abstract class BaseOrderedStrategy : BaseStrategy
+    {
+
+    }
+
     /// <summary>
     /// Top-down strategy...pick the highest point first.
     /// </summary>
@@ -89,7 +94,7 @@ namespace Dominoes.Players.Strategy
 
             var firstDouble = myDominoes.OrderByDescending(s => s.Sum)
                                         .First(s => s.IsDouble);
-
+            
             // Find the follow up
             var followUp = myDominoes.OrderByDescending(s => s.Sum)
                                      .FirstOrDefault(s => !s.IsDouble && s.CanAttachAny(firstDouble));
@@ -103,15 +108,18 @@ namespace Dominoes.Players.Strategy
 
     public class BottomUpPrivateExclusiveStrategy : BaseStrategy
     {
-        public override void Play(List<Domino> myDominoes, Train myTrain)
-        {
 
-        }
     }
 
     public class TopDownPublicFirstStrategy : TopDownPrivateExclusiveStrategy
     {
+        public override bool CanPlay(List<Domino> myDominoes, Train myTrain)
+        {
+            if (base.CanPlay(myDominoes, GameManager.PublicTrain))
+                return true;
 
+            return base.CanPlay(myDominoes, myTrain);
+        }
     }
 
     public class PrivateFirstStrategy : BaseStrategy

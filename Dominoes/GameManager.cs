@@ -23,7 +23,7 @@ namespace Dominoes
             //_players.Add(new Player("Four", dominoList, new PrivateFirstStrategy()));
             //_players.Add(new Player("Eric", dominoList, new EricsStrategy()));
 
-            PublicTrain = new Train(false);
+            PublicTrain = new GlobalPublicTrain();
 
             while (_players.All(s => s.DominosOnHand < DOMINO_START_COUNT))
             {
@@ -46,13 +46,25 @@ namespace Dominoes
         /// </summary>
         public static void TakeTurn()
         {
+            Console.Clear();
+
+            int cursorPosition = Console.CursorTop;
+
             foreach(Player player in _players)
             {
                 if (!player.Won)
                     player.Play();
                 else
                     throw new PlayerWonException(player);
+
+                Console.WriteLine("Player: " + player.Name);
+                Console.WriteLine("Dominoes: " + player.ToString());
+                Console.WriteLine("\nTrain: " + player.PrintTrain());
             }
+
+            Console.WriteLine("\n\nEnter to continue...");
+
+            while (Console.ReadKey().Key != ConsoleKey.Enter) ;
         }
 
         /// <summary>

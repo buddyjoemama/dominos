@@ -41,5 +41,17 @@ namespace Dominoes
                        this.RightValue == doubleDomino.LeftValue ||
                        this.RightValue == doubleDomino.RightValue;
         }
+
+        internal bool CanAttachLeft(Domino domino)
+        {
+            return this.LeftValue == domino.LeftValue ||
+                       this.LeftValue == domino.RightValue;
+        }
+
+        internal bool CanAttachRight(Domino domino)
+        {
+            return this.RightValue == domino.RightValue ||
+                       this.RightValue == domino.LeftValue;
+        }
     }
 }

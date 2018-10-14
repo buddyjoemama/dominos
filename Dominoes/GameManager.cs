@@ -62,6 +62,8 @@ namespace Dominoes
                 Console.WriteLine("\nTrain: " + player.PrintTrain());
             }
 
+            Console.WriteLine("Public train: " + GameManager.PublicTrain.ToString());
+
             Console.WriteLine("\n\nEnter to continue...");
 
             while (Console.ReadKey().Key != ConsoleKey.Enter) ;

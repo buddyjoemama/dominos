@@ -7,7 +7,6 @@ namespace Dominoes.Players
     public class Player
     {
         private IStrategy _strategy;
-        private IStrategy _defaultStrategy = new DefaultStrategy();
         private DominoList _list = null;
         private List<Domino> _myDominoes = new List<Domino>();
         private String _name = null;

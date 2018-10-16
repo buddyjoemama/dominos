@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dominoes.Trains;
 
 namespace Dominoes.Players.Strategy
 {
@@ -8,45 +9,31 @@ namespace Dominoes.Players.Strategy
     {
         public override bool CanPlay(List<Domino> myDominoes, Train myTrain)
         {
-            if (GameManager.MasterPrivateDomino == null)
+            var domino = OrderingFunction(myDominoes)
+                       .FirstOrDefault(s => myTrain.CanPlayDomino(s));
+
+            if (domino == null)
+                return false;
+
+            if (domino.IsDouble && FindDoubleAndFollowUp(myDominoes) != null)
             {
                 var dominos = FindDoubleAndFollowUp(myDominoes);
-                if (dominos == null)
-                    return false;
 
                 _nextToPlay.Add(dominos.Item1);
                 _nextToPlay.Add(dominos.Item2);
-
                 return true;
             }
-            else
+            else if (domino.IsDouble)
             {
-                var domino = OrderingFunction(myDominoes)
-                                       .FirstOrDefault(s => myTrain.CanPlayDomino(s));
+                // We dont have a follow up...so we need to try a different domino
+                List<Domino> l = new List<Domino>(myDominoes);
+                l.Remove(domino);
 
-                if (domino == null)
-                    return false;
-
-                if (domino.IsDouble && FindDoubleAndFollowUp(myDominoes) != null)
-                {
-                    var dominos = FindDoubleAndFollowUp(myDominoes);
-
-                    _nextToPlay.Add(dominos.Item1);
-                    _nextToPlay.Add(dominos.Item2);
-                    return true;
-                }
-                else if (domino.IsDouble)
-                {
-                    // We dont have a follow up...so we need to try a different domino
-                    List<Domino> l = new List<Domino>(myDominoes);
-                    l.Remove(domino);
-
-                    return CanPlay(l, myTrain);
-                }
-
-                _nextToPlay.Add(domino);
-                return true;
+                return CanPlay(l, myTrain);
             }
+
+            _nextToPlay.Add(domino);
+            return true;
         }
 
         protected override Tuple<Domino, Domino> FindDoubleAndFollowUp(List<Domino> myDominoes)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dominoes.Trains;
 
 namespace Dominoes.Players.Strategy
 {
@@ -11,11 +12,11 @@ namespace Dominoes.Players.Strategy
 
         public override bool CanPlay(List<Domino> myDominoes, Train myTrain)
         {
-            if (base.CanPlay(myDominoes, GameManager.PublicTrain))
-            {
-                _trainToPlay = GameManager.PublicTrain;
-                return true;
-            }
+            //if (base.CanPlay(myDominoes, GameManager.PublicTrain))
+            //{
+            //    _trainToPlay = GameManager.PublicTrain;
+            //    return true;
+           // }
 
             _trainToPlay = myTrain;
             return base.CanPlay(myDominoes, myTrain);

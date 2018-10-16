@@ -9,14 +9,11 @@ namespace Dominoes
         {
             Console.WriteLine("Generating Dominoes");
 
-            GameManager.Begin();
+            //GameManager.Begin();
             
             try
             {
-                while (true)
-                {
-                    GameManager.TakeTurn();
-                }
+    
             }
             catch(PlayerWonException e)
             {

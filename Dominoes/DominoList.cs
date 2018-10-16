@@ -5,6 +5,11 @@ namespace Dominoes
 {
     public class DominoList
     {
+        public DominoList()
+        {
+            Generate();     
+        }
+
         private Queue<Domino> _dominoes = null;
 
         /// <summary>
@@ -32,12 +37,18 @@ namespace Dominoes
                 if (rawList.ContainsKey(index))
                 {
                     Domino dominoe = rawList[index];
-                    _dominoes.Enqueue(dominoe);
+
+                    if (dominoe.IsDouble && FirstDouble == null)
+                        FirstDouble = dominoe;
+                    else
+                        _dominoes.Enqueue(dominoe);
 
                     rawList.Remove(index);
                 }
             }
         }
+
+        public Domino FirstDouble { get; private set;  }
 
         /// <summary>
         /// Gets the next dominoe from the queue.

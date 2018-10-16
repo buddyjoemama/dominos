@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominoes", "Dominoes\Dominoes.csproj", "{0FC370C3-4EED-4B9B-84A0-C0B3D36E09B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DominoTests", "DominoTests\DominoTests.csproj", "{A0C49C81-27CC-4EEF-AA79-2E3263856316}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{0FC370C3-4EED-4B9B-84A0-C0B3D36E09B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FC370C3-4EED-4B9B-84A0-C0B3D36E09B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FC370C3-4EED-4B9B-84A0-C0B3D36E09B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C49C81-27CC-4EEF-AA79-2E3263856316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C49C81-27CC-4EEF-AA79-2E3263856316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C49C81-27CC-4EEF-AA79-2E3263856316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C49C81-27CC-4EEF-AA79-2E3263856316}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dominoes.Players.Strategy;
+using Dominoes.Trains;
 
 namespace Dominoes.Players
 {
@@ -9,21 +10,31 @@ namespace Dominoes.Players
         private IStrategy _strategy;
         private DominoList _list = null;
         private List<Domino> _myDominoes = new List<Domino>();
-        private String _name = null;
         private Train _train = null; // Players private train.
 
         public Player(String name, DominoList list, IStrategy strategy)
         {
-            _name = name;
+            Name = name;
             _list = list;
             _strategy = strategy;
-            _train = new Train(true);
+            _train = new Train(true, list.FirstDouble);
+        }
+
+        /// <summary>
+        /// Take n number of dominos
+        /// </summary>
+        /// <param name="v">V.</param>
+        public void Take(int v)
+        {
+            for (int i = 0; i < v; i++)
+                Pick();
         }
 
         public int DominosOnHand => _myDominoes.Count;
         public bool IsTrainPrivate => _train.IsPrivate;
         public bool Won => _myDominoes.Count == 0;
-        public String Name => _name;
+        public String Name { get; private set; }
+        public Train Train => _train;
 
         /// <summary>
         /// Use the primary strategy first then fallback to default.

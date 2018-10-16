@@ -3,38 +3,43 @@ using System.Collections.Generic;
 using Dominoes.Players;
 using Dominoes.Players.Strategy;
 using System.Linq;
+using Dominoes.Trains;
 
 namespace Dominoes
 {
-    public static class GameManager
+    public class GameManager
     {
-        private static DominoList dominoList = new DominoList();
-        private static List<Player> _players = new List<Player>();
-        public static int DOMINO_START_COUNT = 12;
+        public static GameManager Instance { get; private set; } = null;
+        private PlayerList _playerList = new PlayerList();
 
-        public static void Begin()
+        protected GameManager(params Player[] players) 
         {
-            dominoList.Generate();
+            _playerList.Clear();
+            _playerList.AddPlayers(players);
+            PublicTrain = new PublicTrain();
+        }
 
-            _players.Clear();
-            _players.Add(new Player("One", dominoList, new TopDownPrivateExclusiveStrategy()));
-            //_players.Add(new Player("Two", dominoList, new BottomUpStrategy()));
-            //_players.Add(new Player("Three", dominoList, new PublicFirstStrategy()));
-            //_players.Add(new Player("Four", dominoList, new PrivateFirstStrategy()));
-            //_players.Add(new Player("Eric", dominoList, new EricsStrategy()));
+        public static void Init(params Player[] players)
+        {
+            Instance = new GameManager(players);
+        }
 
-            PublicTrain = new GlobalPublicTrain();
-
-            while (_players.All(s => s.DominosOnHand < DOMINO_START_COUNT))
+        /// <summary>
+        /// Starts the game...begins by iterating over the players and picking 
+        /// their dominos.
+        /// </summary>
+        public void StartGame()
+        {       
+            while (_playerList.All(s => s.DominosOnHand < 12))
             {
-                foreach (Player player in _players)
+                foreach (Player player in _playerList)
                 {
-                    if (player.DominosOnHand < DOMINO_START_COUNT)
+                    if (player.DominosOnHand < 12)
                         player.Pick();
                 }
             }
 
-            foreach(Player player in _players)
+            foreach(Player player in _playerList)
             {
                 Console.WriteLine(player.ToString());
             }
@@ -44,13 +49,11 @@ namespace Dominoes
         /// Loop over the players and play each. 
         /// One iteration is a complete turn.
         /// </summary>
-        public static void TakeTurn()
+        public void TakeTurn()
         {
             Console.Clear();
 
-            int cursorPosition = Console.CursorTop;
-
-            foreach(Player player in _players)
+            foreach(Player player in _playerList)
             {
                 if (!player.Won)
                     player.Play();
@@ -62,27 +65,20 @@ namespace Dominoes
                 Console.WriteLine("\nTrain: " + player.PrintTrain());
             }
 
-            Console.WriteLine("Public train: " + GameManager.PublicTrain.ToString());
-
             Console.WriteLine("\n\nEnter to continue...");
 
             while (Console.ReadKey().Key != ConsoleKey.Enter) ;
         }
 
         /// <summary>
-        /// Master public train.
+        /// Gets the public train.
         /// </summary>
         /// <value>The public train.</value>
-        public static Train PublicTrain { get; set; }
+        public PublicTrain PublicTrain { get; private set; }
 
-        /// <summary>
-        /// List of readonly players
-        /// </summary>
-        /// <value>The players.</value>
-        public static IReadOnlyList<Player> Players => _players.AsReadOnly();
-
-        public static Domino MasterPrivateDomino { get; set; }
-
-        public static Domino MasterPublicDomino { get; set; }
+        public List<Train> GetAvailablePublicTrains()
+        {
+            return _playerList.AllAvailableTrains();
+        }
     }
 }

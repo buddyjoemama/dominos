@@ -6,19 +6,15 @@ namespace Dominoes.Players.Strategy
 {
     public abstract class PublicFirstStrategyBase : OrderedStrategyBase
     {
-        private Train _trainToPlay = null;
-
-        public override (bool canPlay, List<Domino> nextToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
+        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
         {
             var canPlay = base.CanPlay(myDominoes, GameManager.Instance.PublicTrain);
 
             if (canPlay.canPlay)
             {
-                _trainToPlay = GameManager.Instance.PublicTrain;
-                return canPlay;
+                return (canPlay.canPlay, canPlay.nextToPlay, GameManager.Instance.PublicTrain);
             }
 
-            _trainToPlay = myTrain;
             return base.CanPlay(myDominoes, myTrain);
         }
     }

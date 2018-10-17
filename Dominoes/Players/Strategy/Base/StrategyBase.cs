@@ -7,9 +7,9 @@ namespace Dominoes.Players.Strategy
 {
     public abstract class StrategyBase : IStrategy
     {
-        public virtual (bool canPlay, List<Domino> nextToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
+        public virtual (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
         {
-            return (myDominoes.Any(s => myTrain.CanPlayDomino(s)), null);
+            return (myDominoes.Any(s => myTrain.CanPlayDomino(s)), null, myTrain);
         }
 
         /// <summary>

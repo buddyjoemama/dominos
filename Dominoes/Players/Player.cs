@@ -46,10 +46,10 @@ namespace Dominoes.Players
         /// </summary>
         public void Play()
         {
-            (bool canPlay, List<Domino> playList) = _strategy.CanPlay(_myDominoes, _train);
+            (bool canPlay, List<Domino> playList, Train trainToPlay) = _strategy.CanPlay(_myDominoes, _train);
 
             if (canPlay)
-                _strategy.Play(playList, _myDominoes, _train);
+                _strategy.Play(playList, _myDominoes, trainToPlay);
             else
             {
                 try

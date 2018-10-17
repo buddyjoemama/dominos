@@ -50,11 +50,6 @@ namespace DominoTests
             playerOne.Play();
 
             Assert.IsFalse(GameManager.Instance.PublicTrain.IsEmpty);
-
-            while(!playerOne.Won)
-            {
-                playerOne.Play();
-            }
         }
     }    
 }

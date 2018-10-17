@@ -7,20 +7,20 @@ namespace Dominoes.Players.Strategy
 {
     public abstract class OrderedStrategyBase : StrategyBase
     {
-        public override (bool canPlay, List<Domino> nextToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
+        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
         {
             var domino = OrderingFunction(myDominoes)
                        .FirstOrDefault(s => myTrain.CanPlayDomino(s));
 
             if (domino == null)
             {
-                return (false, null);
+                return (false, null, null);
             }
 
             if (domino.IsDouble && FindDoubleAndFollowUp(myDominoes) != null)
             {
                 var dominos = FindDoubleAndFollowUp(myDominoes);
-                return (true, dominos);
+                return (true, dominos, myTrain);
             }
             else if (domino.IsDouble)
             {
@@ -31,7 +31,7 @@ namespace Dominoes.Players.Strategy
                 return CanPlay(l, myTrain);
             }
 
-            return (true, new List<Domino> { domino });
+            return (true, new List<Domino> { domino }, myTrain);
         }
 
         protected override List<Domino> FindDoubleAndFollowUp(List<Domino> myDominoes)

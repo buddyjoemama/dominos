@@ -46,9 +46,14 @@ namespace Dominoes
                     rawList.Remove(index);
                 }
             }
+
+            MaxDominos = _dominoes.Count;
         }
 
         public Domino FirstDouble { get; private set;  }
+
+        public int MaxDominos { get; private set; }
+        public bool IsEmpty => _dominoes.Count == 0;
 
         /// <summary>
         /// Gets the next dominoe from the queue.

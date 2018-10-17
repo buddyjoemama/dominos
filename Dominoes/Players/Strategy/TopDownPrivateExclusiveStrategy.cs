@@ -12,10 +12,5 @@ namespace Dominoes.Players.Strategy
     {
         protected override Func<IEnumerable<Domino>, IOrderedEnumerable<Domino>> OrderingFunction =>
             (s) => s.OrderByDescending(t => t.Sum);
-
-        public override bool CanPlay(List<Domino> myDominoes, Train myTrain)
-        {
-            return base.CanPlay(myDominoes, myTrain);
-        }
     }
 }

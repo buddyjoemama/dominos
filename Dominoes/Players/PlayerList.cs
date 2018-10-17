@@ -8,10 +8,6 @@ namespace Dominoes.Players
 {
     public class PlayerList : List<Player>
     {
-        public PlayerList()
-        {
-        }
-
         /// <summary>
         /// Adds a player to the master player list.
         /// </summary>

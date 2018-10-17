@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Dominoes.Players.Strategy;
 using Dominoes.Trains;
+using System.Linq;
 
 namespace Dominoes.Players
 {
@@ -31,10 +32,13 @@ namespace Dominoes.Players
         }
 
         public int DominosOnHand => _myDominoes.Count;
+        public int Turns { get; private set; }
         public bool IsTrainPrivate => _train.IsPrivate;
         public bool Won => _myDominoes.Count == 0;
         public String Name { get; private set; }
         public Train Train => _train;
+
+        public bool HasDouble => _myDominoes.Any(s => s.IsDouble);
 
         /// <summary>
         /// Use the primary strategy first then fallback to default.
@@ -55,6 +59,8 @@ namespace Dominoes.Players
                     Console.WriteLine("Pick list is empty");
                 }
             }
+
+            Turns += 1;
         }
 
         public void Pick()
@@ -66,6 +72,8 @@ namespace Dominoes.Players
         {
             return _train.ToString();
         }
+
+        public bool CanPlay => _strategy.CanPlay(_myDominoes, Train);
 
         public override string ToString()
         {

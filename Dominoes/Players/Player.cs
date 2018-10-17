@@ -46,8 +46,10 @@ namespace Dominoes.Players
         /// </summary>
         public void Play()
         {
-            if (_strategy.CanPlay(_myDominoes, _train))
-                _strategy.Play(_myDominoes, _train);
+            (bool canPlay, List<Domino> playList) = _strategy.CanPlay(_myDominoes, _train);
+
+            if (canPlay)
+                _strategy.Play(playList, _myDominoes, _train);
             else
             {
                 try
@@ -73,7 +75,7 @@ namespace Dominoes.Players
             return _train.ToString();
         }
 
-        public bool CanPlay => _strategy.CanPlay(_myDominoes, Train);
+        public bool CanPlay => _strategy.CanPlay(_myDominoes, Train).canPlay;
 
         public override string ToString()
         {

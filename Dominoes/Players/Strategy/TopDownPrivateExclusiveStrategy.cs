@@ -8,7 +8,7 @@ namespace Dominoes.Players.Strategy
     /// <summary>
     /// Top-down strategy...pick the highest point first.
     /// </summary>
-    public class TopDownPrivateExclusiveStrategy : BaseOrderedStrategy
+    public class TopDownPrivateExclusiveStrategy : OrderedStrategyBase
     {
         protected override Func<IEnumerable<Domino>, IOrderedEnumerable<Domino>> OrderingFunction =>
             (s) => s.OrderByDescending(t => t.Sum);

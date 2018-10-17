@@ -12,6 +12,7 @@
     <Folder Include="Players\" />
     <Folder Include="Players\Strategy\" />
     <Folder Include="Trains\" />
+    <Folder Include="Players\Strategy\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove=":Users:brianbacon:Projects:Dominoes:Dominoes:Players:Player.cs" />

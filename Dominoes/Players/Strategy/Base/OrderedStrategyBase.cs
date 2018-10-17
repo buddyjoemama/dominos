@@ -5,23 +5,22 @@ using Dominoes.Trains;
 
 namespace Dominoes.Players.Strategy
 {
-    public abstract class BaseOrderedStrategy : BaseStrategy
+    public abstract class OrderedStrategyBase : StrategyBase
     {
-        public override bool CanPlay(List<Domino> myDominoes, Train myTrain)
+        public override (bool canPlay, List<Domino> nextToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
         {
             var domino = OrderingFunction(myDominoes)
                        .FirstOrDefault(s => myTrain.CanPlayDomino(s));
 
             if (domino == null)
-                return false;
+            {
+                return (false, null);
+            }
 
             if (domino.IsDouble && FindDoubleAndFollowUp(myDominoes) != null)
             {
                 var dominos = FindDoubleAndFollowUp(myDominoes);
-
-                _nextToPlay.Add(dominos.Item1);
-                _nextToPlay.Add(dominos.Item2);
-                return true;
+                return (true, dominos);
             }
             else if (domino.IsDouble)
             {
@@ -32,11 +31,10 @@ namespace Dominoes.Players.Strategy
                 return CanPlay(l, myTrain);
             }
 
-            _nextToPlay.Add(domino);
-            return true;
+            return (true, new List<Domino> { domino });
         }
 
-        protected override Tuple<Domino, Domino> FindDoubleAndFollowUp(List<Domino> myDominoes)
+        protected override List<Domino> FindDoubleAndFollowUp(List<Domino> myDominoes)
         {
             // We may not have any doubles...
             if (myDominoes.All(s => !s.IsDouble))
@@ -52,7 +50,7 @@ namespace Dominoes.Players.Strategy
             if (followUp == null)
                 return null;
 
-            return new Tuple<Domino, Domino>(firstDouble, followUp);
+            return new List<Domino> { firstDouble, followUp };
         }
 
         protected abstract Func<IEnumerable<Domino>, IOrderedEnumerable<Domino>> OrderingFunction { get; }

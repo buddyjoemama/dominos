@@ -3,6 +3,7 @@ using Dominoes.Players;
 using Dominoes.Players.Strategy;
 using Dominoes.Trains;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tree;
 
 namespace DominoTests
 {
@@ -51,5 +52,7 @@ namespace DominoTests
 
             Assert.IsFalse(GameManager.Instance.PublicTrain.IsEmpty);
         }
+
+
     }    
 }

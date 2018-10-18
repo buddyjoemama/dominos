@@ -49,11 +49,15 @@ namespace Dominoes.Players
             (bool canPlay, List<Domino> playList, Train trainToPlay) = _strategy.CanPlay(_myDominoes, _train);
 
             if (canPlay)
+            {
+                Train.MakePrivate();
                 _strategy.Play(playList, _myDominoes, trainToPlay);
+            }
             else
             {
                 try
                 {
+                    Train.MakePublic();
                     Pick();
                 }
                 catch(InvalidOperationException)

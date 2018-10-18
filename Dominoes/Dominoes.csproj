@@ -17,4 +17,7 @@
   <ItemGroup>
     <Compile Remove=":Users:brianbacon:Projects:Dominoes:Dominoes:Players:Player.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Tree" Version="1.0.4" />
+  </ItemGroup>
 </Project>

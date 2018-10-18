@@ -26,7 +26,19 @@ namespace Dominoes.Players.Strategy
 
         protected virtual List<Domino> FindDoubleAndFollowUp(List<Domino> myDominoes) 
         {
-            return null;
+            // We may not have any doubles...
+            if (myDominoes.All(s => !s.IsDouble))
+                return null;
+
+            var firstDouble = myDominoes.First(s => s.IsDouble);
+
+            // Find the follow up
+            var followUp = myDominoes.FirstOrDefault(s => !s.IsDouble && s.CanAttachAny(firstDouble));
+
+            if (followUp == null)
+                return null;
+
+            return new List<Domino> { firstDouble, followUp };
         }
     }
 }

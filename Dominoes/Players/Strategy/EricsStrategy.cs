@@ -9,6 +9,10 @@ namespace Dominoes.Players.Strategy
     /// </summary>
     public class EricsStrategy : TopDownPublicFirstStrategy
     {
-        
+        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) 
+            CanPlay(List<Domino> myDominoes, Train myTrain)
+        {
+            return base.CanPlay(myDominoes, myTrain);
+        }
     }
 }

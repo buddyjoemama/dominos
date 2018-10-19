@@ -53,6 +53,28 @@ namespace DominoTests
             Assert.IsFalse(GameManager.Instance.PublicTrain.IsEmpty);
         }
 
+        [TestMethod]
+        public void TestPlayerCanPlayOnOtherPlayersPublicTrain()
+        {
+            DominoList dominos = new DominoList();
 
+            Player playerOne = new Player("Player One", dominos, new TopDownPublicAnyStrategy());
+            playerOne.Take(12);
+
+            Player playerTwo = new Player("Player Two", dominos, new TopDownPrivateExclusiveStrategy());
+            playerTwo.Take(12);
+
+            GameManager.Init(dominos, playerOne, playerTwo);
+
+            // Play player 2 until he cant play anymore...should be public train.
+            while (playerTwo.CanPlay)
+            {
+                playerTwo.Play();
+            }
+
+            Assert.IsFalse(playerTwo.Train.IsPrivate);
+
+            playerOne.Play();
+        }
     }    
 }

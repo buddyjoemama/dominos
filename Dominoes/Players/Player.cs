@@ -50,14 +50,12 @@ namespace Dominoes.Players
 
             if (canPlay)
             {
-                Train.MakePrivate();
                 _strategy.Play(playList, _myDominoes, trainToPlay);
             }
             else
             {
                 try
                 {
-                    Train.MakePublic();
                     Pick();
                 }
                 catch(InvalidOperationException)
@@ -79,7 +77,20 @@ namespace Dominoes.Players
             return _train.ToString();
         }
 
-        public bool CanPlay => _strategy.CanPlay(_myDominoes, Train).canPlay;
+        public bool CanPlay
+        {
+            get
+            {
+                var val = _strategy.CanPlay(_myDominoes, Train);
+
+                if (!val.canPlay)
+                    Train.MakePublic();
+                else
+                    Train.MakePrivate();
+
+                return val.canPlay;
+            }
+        }
 
         public override string ToString()
         {

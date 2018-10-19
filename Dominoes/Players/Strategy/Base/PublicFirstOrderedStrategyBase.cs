@@ -14,10 +14,6 @@ namespace Dominoes.Players.Strategy
             {
                 return (canPlay.canPlay, canPlay.nextToPlay, GameManager.Instance.PublicTrain);
             }
-            else
-            {
-                
-            }
 
             return base.CanPlay(myDominoes, myTrain);
         }

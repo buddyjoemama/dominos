@@ -75,6 +75,18 @@ namespace DominoTests
             Assert.IsFalse(playerTwo.Train.IsPrivate);
 
             playerOne.Play();
+
+            try
+            {
+                while (!playerOne.Won)
+                {
+                    playerOne.Play();
+                }
+            }
+            catch(PlayerLostException)
+            {
+                // This player can no longer play...
+            }
         }
     }    
 }

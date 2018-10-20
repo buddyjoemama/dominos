@@ -17,7 +17,7 @@ namespace Dominoes
             }
             catch(PlayerWonException e)
             {
-                Console.WriteLine("Player: " + e.player.Name + " won!");
+                Console.WriteLine("Player: " + e.Player.Name + " won!");
             }
         }
     }

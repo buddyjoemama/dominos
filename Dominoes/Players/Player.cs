@@ -46,6 +46,8 @@ namespace Dominoes.Players
         /// </summary>
         public void Play()
         {
+            Turns += 1;
+
             (bool canPlay, List<Domino> playList, Train trainToPlay) = _strategy.CanPlay(_myDominoes, _train);
 
             if (canPlay)
@@ -61,10 +63,14 @@ namespace Dominoes.Players
                 catch(InvalidOperationException)
                 {
                     Console.WriteLine("Pick list is empty");
+
+                    // Cant play and pick list is empty, this player lost.
+                    throw new PlayerLostException(this);
                 }
             }
 
-            Turns += 1;
+            if (Won)
+                throw new PlayerWonException(this);
         }
 
         public void Pick()
@@ -91,6 +97,8 @@ namespace Dominoes.Players
                 return val.canPlay;
             }
         }
+
+        public bool Lost { get; internal set; }
 
         public override string ToString()
         {

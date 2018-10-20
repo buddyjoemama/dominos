@@ -55,12 +55,20 @@ namespace Dominoes
         {
             Console.Clear();
 
-            foreach(Player player in _playerList)
+            foreach(Player player in _playerList.Where(s=>!s.Lost))
             {
-                if (!player.Won)
-                    player.Play();
-                else
-                    throw new PlayerWonException(player);
+                try
+                {
+                    if (!player.Won)
+                        player.Play();
+                    else
+                        throw new PlayerWonException(player);
+                }
+                catch(PlayerLostException p)
+                {
+                    // This player can no longer be played.
+                    p.Player.Lost = true;
+                }
 
                 Console.WriteLine("Player: " + player.Name);
                 Console.WriteLine("Dominoes: " + player.ToString());
@@ -78,7 +86,7 @@ namespace Dominoes
         /// <value>The public train.</value>
         public PublicTrain PublicTrain { get; private set; }
 
-        public bool Draw => _playerList.All(s => !s.CanPlay) && _dominoList.IsEmpty;
+        public bool Draw => _playerList.All(s => s.Lost);
 
         public List<Train> GetAvailablePublicTrains()
         {

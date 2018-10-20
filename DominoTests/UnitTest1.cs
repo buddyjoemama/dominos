@@ -87,6 +87,7 @@ namespace DominoTests
             {
                 // This player can no longer play...
             }
+            catch(PlayerWonException) {}
         }
     }    
 }

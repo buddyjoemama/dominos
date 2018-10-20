@@ -5,7 +5,7 @@ using Dominoes.Players;
 namespace Dominoes
 {
     [Serializable]
-    internal class PlayerWonException : Exception
+    public class PlayerWonException : Exception
     {
         public Player Player { get; private set; }
 

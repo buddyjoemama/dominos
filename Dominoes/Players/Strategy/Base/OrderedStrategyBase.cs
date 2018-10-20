@@ -7,7 +7,8 @@ namespace Dominoes.Players.Strategy
 {
     public abstract class OrderedStrategyBase : StrategyBase
     {
-        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain)
+        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) 
+            CanPlay(List<Domino> myDominoes, Train myTrain, Player player)
         {
             var domino = OrderingFunction(myDominoes)
                        .FirstOrDefault(s => myTrain.CanPlayDomino(s));
@@ -28,7 +29,7 @@ namespace Dominoes.Players.Strategy
                 List<Domino> l = new List<Domino>(myDominoes);
                 l.Remove(domino);
 
-                return CanPlay(l, myTrain);
+                return CanPlay(l, myTrain, player);
             }
 
             return (true, new List<Domino> { domino }, myTrain);

@@ -1,11 +1,12 @@
 ﻿using System;
+using Dominoes.Players;
 
 namespace Dominoes.Trains
 {
     public class PublicTrain : Train
     {
         public PublicTrain()
-            : base(false, null)
+            : base(false, null, null)
         {
 
         }
@@ -61,6 +62,11 @@ namespace Dominoes.Trains
 
                 _train.AddLast(domino);
             }
+        }
+
+        public override bool IsMyTrain(Player player)
+        {
+            return false;
         }
     }
 }

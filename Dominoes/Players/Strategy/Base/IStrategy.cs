@@ -6,7 +6,7 @@ namespace Dominoes.Players.Strategy
 {
     public interface IStrategy
     {
-        (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain);
+        (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain, Player player);
         void Play(List<Domino> playList, List<Domino> playersDominos, Train trainToPlayOn);
     }
 }

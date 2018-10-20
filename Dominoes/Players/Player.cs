@@ -18,7 +18,7 @@ namespace Dominoes.Players
             Name = name;
             _list = list;
             _strategy = strategy;
-            _train = new Train(true, list.FirstDouble);
+            _train = new Train(true, list.FirstDouble, this);
         }
 
         /// <summary>
@@ -48,7 +48,8 @@ namespace Dominoes.Players
         {
             Turns += 1;
 
-            (bool canPlay, List<Domino> playList, Train trainToPlay) = _strategy.CanPlay(_myDominoes, _train);
+            (bool canPlay, List<Domino> playList, Train trainToPlay) = 
+                _strategy.CanPlay(_myDominoes, _train, this);
 
             if (canPlay)
             {
@@ -87,7 +88,7 @@ namespace Dominoes.Players
         {
             get
             {
-                var val = _strategy.CanPlay(_myDominoes, Train);
+                var val = _strategy.CanPlay(_myDominoes, Train, this);
 
                 if (!val.canPlay)
                     Train.MakePublic();

@@ -7,12 +7,14 @@ namespace Dominoes.Players.Strategy
     /// Build private train, dont use private unless need to.
     /// Preferentially use public.
     /// </summary>
-    public class EricsStrategy : TopDownPublicFirstStrategy
+    public class EricsStrategy : TopDownPublicAnyStrategy
     {
         public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) 
-            CanPlay(List<Domino> myDominoes, Train myTrain)
+            CanPlay(List<Domino> myDominoes, Train myTrain, Player player)
         {
-            return base.CanPlay(myDominoes, myTrain);
+            var play = base.CanPlay(myDominoes, myTrain, player);
+
+            return play;
         }
     }
 }

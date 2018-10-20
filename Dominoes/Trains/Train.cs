@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dominoes.Players;
 
 namespace Dominoes.Trains
 {
     public class Train
     {
         protected LinkedList<Domino> _train = new LinkedList<Domino>();
+        private Player _player = null;
 
         /// <summary>
         /// First double is the head of the private train.
         /// </summary>
         /// <param name="isPrivate">If set to <c>true</c> is private.</param>
         /// <param name="firstDouble">First double.</param>
-        public Train(bool isPrivate, Domino firstDouble)
+        public Train(bool isPrivate, Domino firstDouble, Players.Player player)
         {
             IsPrivate = isPrivate;
+            _player = player;
 
             if(firstDouble != null)
                 _train.AddFirst(firstDouble);
@@ -70,5 +73,10 @@ namespace Dominoes.Trains
         public bool IsPrivate { get; private set; }
 
         public bool IsEmpty => _train.Count == 0;
+
+        public virtual bool IsMyTrain(Player player)
+        {
+            return _player == player;
+        }
     }
 }

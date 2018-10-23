@@ -18,17 +18,6 @@ namespace Dominoes.Trains
 
         public override bool CanPlayDomino(Domino domino)
         {
-            //  if (GameManager.MasterPublicDomino == null && domino.IsDouble)
-            //      return true;
-            //  else if (GameManager.MasterPublicDomino == null && !domino.IsDouble)
-            //      return false;
-            //  else if (GameManager.MasterPublicDomino != null &&
-            //          _train.Count == 0 &&
-            //          GameManager.MasterPublicDomino.CanAttachAny(domino))
-            //{
-            //    return true;
-            // }
-
             if (_train.Count == 0 && domino.IsDouble)
                 return true;
             else if (_train.Count == 0 && !domino.IsDouble)

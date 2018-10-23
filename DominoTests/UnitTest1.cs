@@ -89,5 +89,22 @@ namespace DominoTests
             }
             catch(PlayerWonException) {}
         }
+
+        [TestMethod]
+        public void TestEricsStrategy()
+        {
+            DominoList dominos = new DominoList();
+
+            Player playerOne = new Player("Brian", dominos, new TopDownPublicAnyStrategy());
+            playerOne.Take(12);
+
+            Player playerTwo = new Player("Eric", dominos, new EricsStrategy());
+            playerTwo.Take(12);
+
+            GameManager.Init(dominos, playerOne, playerTwo);
+
+            playerOne.Play();
+            playerTwo.Play();
+        }
     }    
 }

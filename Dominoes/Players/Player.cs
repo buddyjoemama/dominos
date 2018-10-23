@@ -76,7 +76,7 @@ namespace Dominoes.Players
 
         public void Pick()
         {
-            _myDominoes.Add(_list.TakeNextAvailable());
+            _strategy.Pick(_myDominoes, _list);
         }
 
         public String PrintTrain()

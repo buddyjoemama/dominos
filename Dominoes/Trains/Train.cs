@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dominoes.Players;
+using System.Linq;
 
 namespace Dominoes.Trains
 {
@@ -73,6 +74,17 @@ namespace Dominoes.Trains
         public bool IsPrivate { get; private set; }
 
         public bool IsEmpty => _train.Count == 0;
+
+        public Domino FirstDomino => _train?.First?.Value;
+
+        public int Dominos => _train.Count;
+
+        public int TotalDots => _train.Sum(t => t.Sum);
+
+        public List<Domino> Dump()
+        {
+            return _train.ToList();
+        }
 
         public virtual bool IsMyTrain(Player player)
         {

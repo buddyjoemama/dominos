@@ -41,5 +41,10 @@ namespace Dominoes.Players.Strategy
 
             return new List<Domino> { firstDouble, followUp };
         }
+
+        public virtual void Pick(List<Domino> playersDominos, DominoList sourceList)
+        {
+            playersDominos.Add(sourceList.TakeNextAvailable());
+        }
     }
 }

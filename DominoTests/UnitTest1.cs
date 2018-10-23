@@ -105,6 +105,10 @@ namespace DominoTests
 
             playerOne.Play();
             playerTwo.Play();
+            playerTwo.Play();
+            playerTwo.Play();
+            playerTwo.Play();
+            playerTwo.Play();
         }
     }    
 }

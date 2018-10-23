@@ -60,6 +60,11 @@ namespace Dominoes.Trains
             IsPrivate = true;
         }
 
+        internal Domino Pop()
+        {
+            return _train.First();
+        }
+
         public override string ToString()
         {
             String list = "";

@@ -9,7 +9,7 @@ namespace Dominoes.Players.Strategy
     /// Build private train, dont use private unless need to.
     /// Preferentially use public.
     /// </summary>
-    public class EricsStrategy : TopDownPublicAnyStrategy
+    public class EricsStrategy : TopDownPublicExclusiveStrategy
     {
         // Our internal strategy will be to delegate to the top down private
         // to build candidate trains.
@@ -34,9 +34,17 @@ namespace Dominoes.Players.Strategy
                 myDominoes = myDominoes.Minus(_privateTrain);
             }
 
-            var play = base.CanPlay(myDominoes, myTrain, player);
+            // Can we play any of our "public" dominos??
+            if (base.CanPlay(myDominoes, myTrain, player).canPlay)
+                return base.CanPlay(myDominoes, myTrain, player);
 
-            return play;
+            // No? Start playing the on the private train from the private train stash
+            var headOfPrivate = _privateTrain.Pop();
+
+            // Add it back to the main list and call the base...it will be removed on play()
+            myDominoes.Add(headOfPrivate);
+
+            return base.CanPlay(myDominoes, myTrain, player);
         }
 
         public override void Pick(List<Domino> playersDominos, DominoList sourceList)

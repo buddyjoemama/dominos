@@ -62,7 +62,10 @@ namespace Dominoes.Trains
 
         internal Domino Pop()
         {
-            return _train.First();
+            var first = _train.First();
+            _train.RemoveFirst();
+
+            return first;
         }
 
         public override string ToString()

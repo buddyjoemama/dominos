@@ -16,4 +16,15 @@
   <ItemGroup>
     <ProjectReference Include="..\Dominoes\Dominoes.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Sample.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestDominoCreation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestEricsStrategyPublicOnly.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

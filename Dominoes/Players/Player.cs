@@ -99,7 +99,16 @@ namespace Dominoes.Players
             }
         }
 
-        public bool Lost { get; internal set; }
+        public bool Lost { get; set; }
+
+        /// <summary>
+        /// Called before game starts but after dominos have been selected
+        /// </summary>
+        public void Begin()
+        {
+            _strategy.Initialize(this, Train, _myDominoes);
+        }
+
 
         public override string ToString()
         {
@@ -110,6 +119,11 @@ namespace Dominoes.Players
             }
 
             return list;
+        }
+
+        internal void Pick(Domino domino)
+        {
+            _myDominoes.Add(domino);
         }
     }
 }

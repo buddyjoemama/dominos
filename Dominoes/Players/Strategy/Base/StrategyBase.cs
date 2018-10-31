@@ -46,5 +46,7 @@ namespace Dominoes.Players.Strategy
         {
             playersDominos.Add(sourceList.TakeNextAvailable());
         }
+
+        public virtual void Initialize(Player player, Train train, List<Domino> playerDominos) {}
     }
 }

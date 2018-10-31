@@ -10,6 +10,19 @@ namespace Dominoes
             Generate();     
         }
 
+        public DominoList(Domino firstDomino, List<Domino> initialList)
+        {
+            if(!firstDomino.IsDouble)
+            {
+                throw new Exception("First domino must be a double");
+            }
+
+            FirstDouble = firstDomino;
+
+            if(initialList != null)
+                _dominoes = new Queue<Domino>(initialList);
+        }
+
         private Queue<Domino> _dominoes = null;
 
         /// <summary>

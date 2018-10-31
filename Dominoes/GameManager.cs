@@ -19,6 +19,7 @@ namespace Dominoes
             _playerList.AddPlayers(players);
             PublicTrain = new PublicTrain();
             _dominoList = dominos;
+            _playerList.ForEach(s => s.Begin());
         }
 
         public static void Init(DominoList dominos, params Player[] players)
@@ -91,6 +92,40 @@ namespace Dominoes
         public List<Train> GetAvailablePublicTrains()
         {
             return _playerList.AllAvailableTrains();
+        }
+
+        public Player GetPlayer(String name)
+        {
+            return _playerList.Single(s => s.Name == name);
+        }
+
+        /// <summary>
+        /// Creates from config.
+        /// </summary>
+        /// <returns>The from config.</returns>
+        /// <param name="game">Game.</param>
+        public static GameManager CreateFromConfig(GameConfiguration game)
+        {
+            DominoList list = new DominoList(game.InitialDomino.ToDomino(),
+                                             game.PickList.ToDominos());
+
+            List<Player> allPlayers = new List<Player>();
+            foreach(var p in game.Players)
+            {
+                IStrategy strategy = Activator.CreateInstance(Type.GetType(p.Type)) as IStrategy;
+                Player newPlayer = new Player(p.Name, list, strategy);
+
+                foreach(var d in p.Dominos)
+                {
+                    newPlayer.Pick(d.ToDomino());
+                }
+
+                allPlayers.Add(newPlayer);
+            }
+
+            GameManager.Init(list, allPlayers.ToArray());
+
+            return GameManager.Instance;
         }
     }
 }

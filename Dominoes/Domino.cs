@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+
 namespace Dominoes
 {
     public class Domino
@@ -8,6 +10,15 @@ namespace Dominoes
             Name = name;
             LeftValue = lVal;
             RightValue = rVal;
+        }
+
+        public Domino(string domino)
+        {
+            Name = domino;
+
+            var group = Regex.Match(domino, @"\[(?<left>\d+),(?<right>\d+)\]");
+            LeftValue = Convert.ToInt16(group.Groups["left"].Value);
+            RightValue = Convert.ToInt16(group.Groups["right"].Value);
         }
 
         public String Name { get; set; }
@@ -30,6 +41,8 @@ namespace Dominoes
         }
 
         public int Sum => LeftValue + RightValue;
+
+        public bool MarkForPrivatePlay { get; internal set; }
 
         /// <summary>
         /// Can this domino be attached to either side of the double.

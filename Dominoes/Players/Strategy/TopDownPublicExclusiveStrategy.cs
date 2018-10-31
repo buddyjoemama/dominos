@@ -6,10 +6,6 @@ namespace Dominoes.Players.Strategy
 {
     public class TopDownPublicExclusiveStrategy : TopDownPublicFirstStrategy
     {
-        public TopDownPublicExclusiveStrategy()
-        {
-        }
-
         public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain, Player player)
         {
             if (base.CanPlay(myDominoes, GameManager.Instance.PublicTrain, player).canPlay)

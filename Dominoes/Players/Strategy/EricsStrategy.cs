@@ -16,11 +16,47 @@ namespace Dominoes.Players.Strategy
         private IStrategy privateStrategy = new TopDownPrivateExclusiveStrategy();
         private Train _privateTrain = null;
 
-        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) 
+        public override (bool canPlay, List<Domino> nextToPlay, Train trainToPlay)
             CanPlay(List<Domino> myDominoes, Train myTrain, Player player)
         {
-            List<Train> candidateTrains = BuildTrainsFrom(myDominoes, 
-                                                          myTrain.FirstDomino,
+            var forPublicPlay =
+                base.CanPlay(myDominoes.Where(s => !s.MarkForPrivatePlay).ToList(), myTrain, player);
+
+            // Use the dominos marked for public use
+            if (myDominoes.Any(s => !s.MarkForPrivatePlay) && forPublicPlay.canPlay)
+            {
+                return forPublicPlay;
+            }
+
+            var canPlayPrivate = 
+                privateStrategy.CanPlay(myDominoes.Where(s => s.MarkForPrivatePlay).ToList(), myTrain, player);
+
+            if (canPlayPrivate.canPlay)
+                return canPlayPrivate;
+                
+            return base.CanPlay(myDominoes, myTrain, player);
+        }
+
+        public override void Pick(List<Domino> playersDominos, DominoList sourceList)
+        {
+            Domino domino = sourceList.TakeNextAvailable();
+
+            if (_privateTrain != null && _privateTrain.CanPlayDomino(domino))
+            {
+                domino.MarkForPrivatePlay = true;
+                _privateTrain.PlayDomino(domino);
+            }
+            else
+                playersDominos.Add(domino);
+        }
+
+        /// <summary>
+        /// Organize dominos into two trains: private and public.
+        /// </summary>
+        public override void Initialize(Player player, Train train, List<Domino> playerDominos)
+        {
+            List<Train> candidateTrains = BuildTrainsFrom(playerDominos,
+                                                          train.FirstDomino,
                                                           player);
 
             // For all the candidate trains, find the one with the most points...
@@ -31,30 +67,11 @@ namespace Dominoes.Players.Strategy
                 _privateTrain = candidateTrains
                     .First(s => s.TotalDots == maxDots);
 
-                myDominoes = myDominoes.Minus(_privateTrain);
+                foreach (var d in _privateTrain.Dump())
+                {
+                    d.MarkForPrivatePlay = true;
+                }
             }
-
-            // Can we play any of our "public" dominos??
-            if (base.CanPlay(myDominoes, myTrain, player).canPlay)
-                return base.CanPlay(myDominoes, myTrain, player);
-
-            // No? Start playing the on the private train from the private train stash
-            var headOfPrivate = _privateTrain.Pop();
-
-            // Add it back to the main list and call the base...it will be removed on play()
-            myDominoes.Add(headOfPrivate);
-
-            return base.CanPlay(myDominoes, myTrain, player);
-        }
-
-        public override void Pick(List<Domino> playersDominos, DominoList sourceList)
-        {
-            Domino domino = sourceList.TakeNextAvailable();
-
-            if (_privateTrain != null && _privateTrain.CanPlayDomino(domino))
-                _privateTrain.PlayDomino(domino);
-            else
-                playersDominos.Add(domino);
         }
 
         /// <summary>

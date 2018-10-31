@@ -9,5 +9,6 @@ namespace Dominoes.Players.Strategy
         (bool canPlay, List<Domino> nextToPlay, Train trainToPlay) CanPlay(List<Domino> myDominoes, Train myTrain, Player player);
         void Play(List<Domino> playList, List<Domino> playersDominos, Train trainToPlayOn);
         void Pick(List<Domino> playersDomionos, DominoList list);
+        void Initialize(Player player, Train train, List<Domino> playerDominos);
     }
 }

@@ -1,0 +1,10 @@
+﻿{
+  "initial_domino": "[1,1]",
+  "players": [
+    {
+      "name": "player1",
+      "dominos": [ "[2,2]", "[2,3]" ],
+      "type": "Dominoes.Players.Strategy.EricsStrategy,Dominoes"
+    }
+  ]
+}

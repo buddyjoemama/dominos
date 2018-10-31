@@ -27,5 +27,20 @@ namespace Dominoes
                 yield return d;
             }
         }
+
+        public static List<Domino> ToList(this Domino domino)
+        {
+            return new List<Domino> { domino };
+        }
+
+        public static Domino ToDomino(this string domino)
+        {
+            return new Domino(domino);
+        }
+
+        public static List<Domino> ToDominos(this String[] dominos)
+        {
+            return dominos?.Select(s => new Domino(s)).ToList();
+        }
     }
 }

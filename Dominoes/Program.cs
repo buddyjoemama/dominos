@@ -14,7 +14,7 @@ namespace Dominoes
 
             List<String> winners = new List<string>();
 
-            for (int i = 1; i <= 100000; i++)
+            for (int i = 1; i <= 10000; i++)
             {
                 Console.WriteLine("Playing game: " + i);
 
@@ -22,8 +22,13 @@ namespace Dominoes
                 {
                     Player player1 = new Player("player1", new EricsStrategy());
                     Player player2 = new Player("player2", new TopDownPublicAnyStrategy());
+                    // Player player3 = new Player("player3", new TopDownPublicAnyStrategy());
+                    //Player player4 = new Player("player4", new TopDownPublicAnyStrategy());
+                    //Player player5 = new Player("player5", new TopDownPublicAnyStrategy());
+                    //Player player6 = new Player("player6", new TopDownPublicAnyStrategy());
+                    //Player player7 = new Player("player7", new TopDownPublicAnyStrategy());
 
-                    GameManager manager = GameManager.Init(player1, player2);
+                    GameManager manager = GameManager.Init(player1, player2);//, player3);//, player4, player5, player6, player7);
                     manager.StartGame();
 
                     while (true)

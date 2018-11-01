@@ -19,12 +19,22 @@ namespace Dominoes
             _playerList.AddPlayers(players);
             PublicTrain = new PublicTrain();
             _dominoList = dominos;
-            _playerList.ForEach(s => s.Begin());
         }
 
-        public static void Init(DominoList dominos, params Player[] players)
+        public static GameManager Init(DominoList dominos, params Player[] players)
         {
             Instance = new GameManager(dominos, players);
+            return Instance;
+        }
+
+        public static GameManager Init(params Player[] players)
+        {
+            DominoList list = new DominoList();
+            foreach (var player in players)
+                player.SetPickList(list);
+
+            Instance = new GameManager(list, players);
+            return Instance;
         }
 
         /// <summary>
@@ -44,6 +54,7 @@ namespace Dominoes
 
             foreach(Player player in _playerList)
             {
+                player.Begin();
                 Console.WriteLine(player.ToString());
             }
         }
@@ -56,8 +67,15 @@ namespace Dominoes
         {
             Console.Clear();
 
-            foreach(Player player in _playerList.Where(s=>!s.Lost))
+            Console.WriteLine("\nPublic train: " + PublicTrain.ToString());
+
+            foreach (Player player in _playerList.Where(s=>!s.Lost))
             {
+                Console.WriteLine("\nPlayer: " + player.Name);
+                Console.WriteLine("Private train: " + player.IsTrainPrivate);
+                Console.WriteLine("Dominoes: " + player.ToString());
+                Console.WriteLine("Train: " + player.PrintTrain());
+
                 try
                 {
                     if (!player.Won)
@@ -69,11 +87,17 @@ namespace Dominoes
                 {
                     // This player can no longer be played.
                     p.Player.Lost = true;
-                }
+                }        
+            }
 
-                Console.WriteLine("Player: " + player.Name);
+            Console.WriteLine("------------------------------------------");
+            Console.WriteLine("\nPublic train: " + PublicTrain.ToString());
+            foreach (Player player in _playerList.Where(s=>!s.Lost))
+            {
+                Console.WriteLine("\nPlayer: " + player.Name);
+                Console.WriteLine("Private train: " + player.IsTrainPrivate);
                 Console.WriteLine("Dominoes: " + player.ToString());
-                Console.WriteLine("\nTrain: " + player.PrintTrain());
+                Console.WriteLine("Train: " + player.PrintTrain());
             }
 
             Console.WriteLine("\n\nEnter to continue...");

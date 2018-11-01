@@ -21,6 +21,12 @@ namespace Dominoes.Players
             _train = new Train(true, list.FirstDouble, this);
         }
 
+        public Player(String name, IStrategy strategy)
+        {
+            Name = name;
+            _strategy = strategy;
+        }
+
         /// <summary>
         /// Take n number of dominos
         /// </summary>
@@ -32,12 +38,18 @@ namespace Dominoes.Players
         }
 
         public int DominosOnHand => _myDominoes.Count;
+
+        internal void SetPickList(DominoList list)
+        {
+            _list = list;
+            _train = new Train(true, list.FirstDouble, this);
+        }
+
         public int Turns { get; private set; }
         public bool IsTrainPrivate => _train.IsPrivate;
         public bool Won => _myDominoes.Count == 0;
         public String Name { get; private set; }
         public Train Train => _train;
-
         public bool HasDouble => _myDominoes.Any(s => s.IsDouble);
 
         /// <summary>
@@ -106,7 +118,6 @@ namespace Dominoes.Players
         {
             _strategy.Initialize(this, Train, _myDominoes);
         }
-
 
         public override string ToString()
         {

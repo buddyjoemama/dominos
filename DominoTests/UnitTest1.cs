@@ -110,20 +110,6 @@ namespace DominoTests
         }
 
         [TestMethod]
-        [TestCategory("gamelogic")]
-        [TestProperty("game", "TestDominoCreation.json")]
-        [ExpectedException(typeof(PlayerWonException))]
-        public void TestDominoCreation()
-        {
-            GameManager manager = CreateGameManager("TestDominoCreation.json");
-
-            var player1 = manager.GetPlayer("player1");
-            player1.Play();
-            player1.Play();
-        }
-
-        [TestMethod]
-        [TestProperty("game", "TestEricsStrategyPublicOnly.json")]
         [ExpectedException(typeof(PlayerWonException))]
         public void TestEricsStrategyPublicOnly()
         {

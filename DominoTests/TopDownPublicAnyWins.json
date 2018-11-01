@@ -1,0 +1,17 @@
+﻿{
+  "initial_domino": "[1,1]",
+  "players": [
+    {
+      "name": "player1",
+      "dominos": [ "[2,3]", "[4,7]" ],
+      "type": "Dominoes.Players.Strategy.EricsStrategy,Dominoes",
+      "notes": "This player cant play on any train"
+    },
+    {
+      "name": "player2",
+      "dominos":  ["[1,4]", "[4,5]"],
+      "type": "Dominoes.Players.Strategy.TopDownPublicAnyStrategy,Dominoes",
+      "notes": "This player will play on the player1s train"
+    }
+  ]
+}

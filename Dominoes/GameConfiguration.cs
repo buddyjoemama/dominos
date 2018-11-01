@@ -7,10 +7,6 @@ namespace Dominoes
 {
     public class GameConfiguration
     {
-        public GameConfiguration()
-        {
-        }
-
         [JsonProperty("players")]
         public GameConfigurationPlayer[] Players { get; set; }
 
@@ -31,5 +27,8 @@ namespace Dominoes
 
         [JsonProperty("type")]
         public String Type { get; set; }
+
+        [JsonProperty("notes")]
+        public String Notes { get; set; }
     }
 }

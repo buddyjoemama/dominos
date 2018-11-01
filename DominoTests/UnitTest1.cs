@@ -194,5 +194,22 @@ namespace DominoTests
                 throw;
             }
         }
+
+        [TestMethod]
+        [TestProperty("game", "TopDownPublicAnyWins.json")]
+        public void TestTopDownPublicAnyWins()
+        {
+            GameManager manager = _context.Properties["game"] as GameManager;
+            var player1 = manager.GetPlayer("player1");
+
+            try
+            {
+                player1.Play();
+            }
+            catch(PlayerLostException e)
+            {
+                Assert.IsFalse(player1.Train.IsPrivate);
+            }
+        }
     }    
 }

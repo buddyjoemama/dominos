@@ -53,12 +53,17 @@ namespace Dominoes.Players
 
             if (canPlay)
             {
+                if (trainToPlay.IsMyTrain(this) && !Train.IsPrivate)
+                    Train.MakePrivate();
+
                 _strategy.Play(playList, _myDominoes, trainToPlay);
             }
             else
             {
                 try
                 {
+                    Train.MakePublic();
+
                     Pick();
                 }
                 catch(InvalidOperationException)
@@ -88,14 +93,7 @@ namespace Dominoes.Players
         {
             get
             {
-                var val = _strategy.CanPlay(_myDominoes, Train, this);
-
-                if (!val.canPlay)
-                    Train.MakePublic();
-                else
-                    Train.MakePrivate();
-
-                return val.canPlay;
+                return _strategy.CanPlay(_myDominoes, Train, this).canPlay;
             }
         }
 

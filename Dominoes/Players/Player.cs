@@ -80,8 +80,6 @@ namespace Dominoes.Players
                 }
                 catch(InvalidOperationException)
                 {
-                    Console.WriteLine("Pick list is empty");
-
                     // Cant play and pick list is empty, this player lost.
                     throw new PlayerLostException(this);
                 }

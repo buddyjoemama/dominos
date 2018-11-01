@@ -34,30 +34,6 @@ namespace DominoTests
         }
 
         [TestMethod]
-        public void TestPlayerCanPlayOnPublicTrain()
-        {
-            DominoList dominos = new DominoList();
-
-            Player playerOne = new Player("Player One", dominos, new TopDownPublicFirstStrategy());
-            playerOne.Take(12);
-
-            // Need to first play a double on the public train.
-            // Make sure we have one.
-            while(!playerOne.HasDouble)
-            {
-                playerOne.Pick();
-            }
-
-            Assert.IsTrue(playerOne.HasDouble);
-            GameManager.Init(dominos, playerOne);
-
-            // Should play on the public train first.
-            playerOne.Play();
-
-            Assert.IsFalse(GameManager.Instance.PublicTrain.IsEmpty);
-        }
-
-        [TestMethod]
         public void TestEricsStrategy()
         {
             DominoList dominos = new DominoList();

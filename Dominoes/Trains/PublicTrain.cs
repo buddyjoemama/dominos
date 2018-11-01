@@ -29,10 +29,13 @@ namespace Dominoes.Trains
 
         public override void PlayDomino(Domino domino)
         {
+            // Must start with a double.
+            if (_train.Count == 0 && !domino.IsDouble)
+                return;
+
             if(_train.Count == 0 && domino.IsDouble)
             {
                 _train.AddFirst(domino);
-
             }
 
             // Double can check both ends of the train...

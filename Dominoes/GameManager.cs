@@ -37,6 +37,8 @@ namespace Dominoes
             return Instance;
         }
 
+        public List<Player> Players => _playerList.ToList();
+
         /// <summary>
         /// Starts the game...begins by iterating over the players and picking 
         /// their dominos.
@@ -55,7 +57,6 @@ namespace Dominoes
             foreach(Player player in _playerList)
             {
                 player.Begin();
-                Console.WriteLine(player.ToString());
             }
         }
 
@@ -87,7 +88,7 @@ namespace Dominoes
                 {
                     // This player can no longer be played.
                     p.Player.Lost = true;
-                }        
+                }
             }
 
             Console.WriteLine("------------------------------------------");

@@ -23,7 +23,7 @@ namespace Dominoes
                 _dominoes = new Queue<Domino>(initialList);
         }
 
-        private Queue<Domino> _dominoes = null;
+        private Queue<Domino> _dominoes = new Queue<Domino>();
 
         /// <summary>
         /// Clear the list of dominos and regenerate the pick queue

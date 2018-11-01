@@ -131,33 +131,19 @@ namespace DominoTests
             _context = context;
         }
 
-        [TestInitialize]
-        public void TestInitialize()
+        public GameManager CreateGameManager(String fileName)
         {
-            var atts = this.GetType().GetMethod(_context.TestName)
-                           .GetCustomAttributes(typeof(TestPropertyAttribute), true)
-                           .Select(s => s as TestPropertyAttribute)
-                           .ToList();
-                           
-            if (atts != null && atts.Count > 0)
+            if (fileName != null && File.Exists(fileName))
             {
-                String fileName = atts.FirstOrDefault(s=>s.Name == "game")?.Value;
+                var game = JsonConvert.DeserializeObject<GameConfiguration>(File.ReadAllText(fileName));
 
-                if (fileName != null && File.Exists(fileName))
-                {
-                    var game = JsonConvert.DeserializeObject<GameConfiguration>(File.ReadAllText(fileName));
+                if (_context.Properties.ContainsKey("game"))
+                    _context.Properties.Remove("game");
 
-                    if (_context.Properties.ContainsKey("game"))
-                        _context.Properties.Remove("game");
-
-                    var newGame = GameManager.CreateFromConfig(game);
-
-                    if (newGame != null)
-                    {
-                        _context.Properties.Add("game", newGame);
-                    }
-                }
+                return GameManager.CreateFromConfig(game);
             }
+
+            return null;
         }
 
         [TestMethod]
@@ -166,7 +152,7 @@ namespace DominoTests
         [ExpectedException(typeof(PlayerWonException))]
         public void TestDominoCreation()
         {
-            GameManager manager = _context.Properties["game"] as GameManager;
+            GameManager manager = CreateGameManager("TestDominoCreation.json");
 
             var player1 = manager.GetPlayer("player1");
             player1.Play();
@@ -178,7 +164,7 @@ namespace DominoTests
         [ExpectedException(typeof(PlayerWonException))]
         public void TestEricsStrategyPublicOnly()
         {
-            GameManager manager = _context.Properties["game"] as GameManager;
+            GameManager manager = CreateGameManager("TestEricsStrategyPublicOnly.json");
             Assert.IsNotNull(manager);
 
             var player1 = manager.GetPlayer("player1");
@@ -196,20 +182,23 @@ namespace DominoTests
         }
 
         [TestMethod]
-        [TestProperty("game", "TopDownPublicAnyWins.json")]
+        [ExpectedException(typeof(PlayerWonException))]
         public void TestTopDownPublicAnyWins()
         {
-            GameManager manager = _context.Properties["game"] as GameManager;
+            GameManager manager = CreateGameManager("TopDownPublicAnyWins.json");
             var player1 = manager.GetPlayer("player1");
 
-            try
-            {
-                player1.Play();
-            }
-            catch(PlayerLostException e)
-            {
-                Assert.IsFalse(player1.Train.IsPrivate);
-            }
+            Assert.IsFalse(player1.CanPlay);
+            Assert.IsFalse(player1.Train.IsPrivate);
+
+            // Player1 cant play...so his train is now public.
+            var player2 = manager.GetPlayer("player2");
+            var canPlay = player2.CanPlay;
+
+            player2.Play();
+            Assert.IsTrue(player1.Train.Dominos == 2); // Because we played [1,4]
+
+            player2.Play();
         }
     }    
 }

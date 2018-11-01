@@ -58,43 +58,6 @@ namespace DominoTests
         }
 
         [TestMethod]
-        public void TestPlayerCanPlayOnOtherPlayersPublicTrain()
-        {
-            DominoList dominos = new DominoList();
-
-            Player playerOne = new Player("Player One", dominos, new TopDownPublicAnyStrategy());
-            playerOne.Take(12);
-
-            Player playerTwo = new Player("Player Two", dominos, new TopDownPrivateExclusiveStrategy());
-            playerTwo.Take(12);
-
-            GameManager.Init(dominos, playerOne, playerTwo);
-
-            // Play player 2 until he cant play anymore...should be public train.
-            while (playerTwo.CanPlay)
-            {
-                playerTwo.Play();
-            }
-
-            Assert.IsFalse(playerTwo.Train.IsPrivate);
-
-            playerOne.Play();
-
-            try
-            {
-                while (!playerOne.Won)
-                {
-                    playerOne.Play();
-                }
-            }
-            catch(PlayerLostException)
-            {
-                // This player can no longer play...
-            }
-            catch(PlayerWonException) {}
-        }
-
-        [TestMethod]
         public void TestEricsStrategy()
         {
             DominoList dominos = new DominoList();
@@ -188,8 +151,14 @@ namespace DominoTests
             GameManager manager = CreateGameManager("TopDownPublicAnyWins.json");
             var player1 = manager.GetPlayer("player1");
 
-            Assert.IsFalse(player1.CanPlay);
-            Assert.IsFalse(player1.Train.IsPrivate);
+            try
+            {
+                player1.Play();
+            }
+            catch
+            {
+                Assert.IsFalse(player1.Train.IsPrivate);
+            }
 
             // Player1 cant play...so his train is now public.
             var player2 = manager.GetPlayer("player2");

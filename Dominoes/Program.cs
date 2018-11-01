@@ -14,7 +14,7 @@ namespace Dominoes
 
             List<String> winners = new List<string>();
 
-            for (int i = 1; i < 100000; i++)
+            for (int i = 1; i <= 100000; i++)
             {
                 Console.WriteLine("Playing game: " + i);
 

@@ -49,10 +49,8 @@ namespace Dominoes
         /// </summary>
         internal bool CanAttachAny(Domino doubleDomino)
         {
-            return this.LeftValue == doubleDomino.LeftValue ||
-                       this.LeftValue == doubleDomino.RightValue ||
-                       this.RightValue == doubleDomino.LeftValue ||
-                       this.RightValue == doubleDomino.RightValue;
+            return this.CanAttachLeft(doubleDomino) 
+            || this.CanAttachRight(doubleDomino);
         }
 
         internal bool CanAttachLeft(Domino domino)
